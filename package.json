@@ -1,12 +1,11 @@
 {
-  "name": "electron-webpack-quick-start",
+  "name": "a",
   "version": "0.0.0",
-  "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
-    "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+    "dist": "npm compile && electron-builder",
+    "dist:dir": "npm dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
     "source-map-support": "^0.5.5"
