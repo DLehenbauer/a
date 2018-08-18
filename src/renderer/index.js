@@ -26,29 +26,20 @@ const monster = new Monster(
 creatures.push(monster)
 
 const render = () => {
-  const fov = new ROT.FOV.PreciseShadowcasting((x, y) => {
-    return map.getAt(x, y);
-  });
-  
-  fov.compute(player.x, player.y, 6, (x, y, r, visibility) => {
-    const tile = map.getAt(x, y);
-    if (!tile) {
-      display.draw(x, y, '#');
-    } else {
-      display.draw(x, y, '.');
-    }
-  }); 
+  map.resetLighting();
+  map.lightAt(player.x, player.y, 6);
 
-  // for (let y = 0; y < map.height; y++) {
-  //   for (let x = 0; x < map.width; x++) {
-  //     const tile = map.getAt(x, y);
-  //     if (!tile) {
-  //       display.draw(x, y, '#');
-  //     } else {
-  //       display.draw(x, y, '.');
-  //     }
-  //   }
-  // }
+  for (let y = 0; y < map.height; y++) {
+    for (let x = 0; x < map.width; x++) {
+      const light = map.getLightingAt(x, y)
+      if (light) {
+        const tile = map.getTileAt(x, y)
+        display.draw(x, y, tile.symbol)
+      } else {
+        display.draw(x, y, ' ')
+      }
+    }
+  }
   
   for (const creature of creatures) {
     display.draw(creature.x, creature.y, creature.symbol);
@@ -61,7 +52,7 @@ const movePlayer = (deltaX, deltaY) => {
   const newX = player.x + deltaX;
   const newY = player.y + deltaY;
 
-  if (!map.getAt(newX, newY)) {
+  if (!map.isPassableAt(newX, newY)) {
     return;
   }
 
